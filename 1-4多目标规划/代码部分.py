@@ -1,7 +1,6 @@
 import numpy as np
 from scipy.optimize import minimize
 
-
 # 定义目标函数
 def objective(x, dp, dm):
     return dp[0] + dm[1] + dp[1] + dm[2]
@@ -28,7 +27,7 @@ dm0 = [0, 0, 0]
 constraints = [{'type': 'ineq', 'fun': constraint1},
                {'type': 'eq', 'fun': lambda x: constraint2(x, dp0, dm0)},
                {'type': 'eq', 'fun': lambda x: constraint3(x, dp0, dm0)},
-               {'type': 'eq', 'fun': lambda x: constraint4(x, dp0, dm0)}]
+               {'type': 'eq', 'fun': lambda x: constraint4(x, dp0, dm0)}]          
 
 # 设置边界
 bounds = [(0, None), (0, None)]
@@ -45,10 +44,3 @@ for i in range(3):
     goal[i] = res.fun
     # 更新约束条件
     constraints.append({'type': 'ineq', 'fun': lambda x: goal[i] - objective(x, dp0, dm0)})
-
-
-
-
-
-
-
