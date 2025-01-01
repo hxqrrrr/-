@@ -4,9 +4,6 @@ import json
 import os
 from dotenv import load_dotenv
 
-# 加载环境变量
-load_dotenv()
-
 # 设置页面
 st.set_page_config(
     page_title="情感分析系统",
@@ -18,8 +15,16 @@ st.set_page_config(
 st.title("✨ 情感分析系统")
 st.write("这是一个基于AI的情感分析系统，可以分析文本中的情感倾向、强度和类型。")
 
-# 从环境变量或Streamlit Secrets获取API密钥
-api_key = os.getenv('DEEPSEEK_API_KEY') or st.secrets["DEEPSEEK_API_KEY"]
+# 优先使用 Streamlit Secrets，如果本地开发则使用环境变量
+try:
+    api_key = st.secrets["DEEPSEEK_API_KEY"]
+except:
+    # 本地开发时加载 .env 文件
+    load_dotenv()
+    api_key = os.getenv('DEEPSEEK_API_KEY')
+    if not api_key:
+        st.error("请设置 DEEPSEEK_API_KEY！")
+        st.stop()
 
 def analyze_sentiment(text: str) -> dict:
     """调用Deepseek API进行情感分析"""
